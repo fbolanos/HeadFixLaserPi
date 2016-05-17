@@ -67,7 +67,6 @@ while done == False:
     screen.fill((255, 255, 255))
     # write draw code here
 
-    # display what’s drawn. this might change.
     pygame.display.update()
     # run at 60 fps
     clock.tick(60)
