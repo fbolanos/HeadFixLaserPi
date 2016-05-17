@@ -51,6 +51,6 @@ class BipolarStepperMotor:
 
 
 m1 = BipolarStepperMotor(19, 26, 20, 21)
-m1.move(1, 1000)
-sleep(2)
-m1.move(-1, 1000)
+for i in range(10):
+    m1.move(1, 10, 0.001)
+    m1.move(-1, 10, 0.001)

@@ -19,6 +19,8 @@ clock = pygame.time.Clock()
 done = False
 step_mode = False
 delay = 0.1
+move_left = False
+move_right = False
 while done == False:
     # write event handlers here
     for event in pygame.event.get():
@@ -37,8 +39,10 @@ while done == False:
                     move_right = True
             elif event.key == pygame.K_s:
                 if step_mode:
+                    print "Fast Mode!!"
                     step_mode = False
                 else:
+                    print "Step by step mode..."
                     step_mode = True
 
             elif event.key == pygame.K_UP:
@@ -69,7 +73,7 @@ while done == False:
 
     pygame.display.update()
     # run at 60 fps
-    clock.tick(60)
+    clock.tick(1000)
 
 # close the window and quit
 pygame.quit()
