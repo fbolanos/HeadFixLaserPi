@@ -3,15 +3,19 @@ from BipolarStepperMotor import BipolarStepperMotor
 
 
 
-# motor object to be controlled
-motor = BipolarStepperMotor(19,26,20,21)
+# motor_lr object to be controlled
+motor_lr = BipolarStepperMotor(19, 26, 20, 21)
+
+
+# motor_ud object to be controlled
+motor_ud = BipolarStepperMotor(1, 1, 1, 1)
 
 # initialize game engine
 pygame.init()
 # set screen width/height and caption
-size = [640, 480]
+size = [64, 48]
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption('My Game')
+pygame.display.set_caption('Laser Stage Controller')
 # initialize clock. used later in the loop.
 clock = pygame.time.Clock()
 
@@ -21,50 +25,78 @@ step_mode = False
 delay = 0.1
 move_left = False
 move_right = False
-while done == False:
+move_up = False
+move_down = False
+while done is False:
     # write event handlers here
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
         elif event.type == pygame.KEYDOWN:
+            # Left Right motor motion
             if event.key == pygame.K_LEFT:
                 if step_mode:
-                    motor.move(1, 1, 0)
+                    motor_lr.move(1, 1, 0)
                 else:
                     move_left = True
             elif event.key == pygame.K_RIGHT:
                 if step_mode:
-                    motor.move(-1, 1, 0)
+                    motor_lr.move(-1, 1, 0)
                 else:
                     move_right = True
-            elif event.key == pygame.K_s:
+
+            # Up Down motor motion
+            elif event.key == pygame.K_UP:
+                if step_mode:
+                    motor_ud.move(-1, 1, 0)
+                else:
+                    move_up = True
+            elif event.key == pygame.K_DOWN:
+                if step_mode:
+                    motor_ud.move(1, 1, 0)
+                else:
+                    move_down = True
+
+            # Delay and mode selectio
+            elif event.key == pygame.K_e:
                 if step_mode:
                     print "Fast Mode!!"
                     step_mode = False
                 else:
                     print "Step by step mode..."
                     step_mode = True
-
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_w:
                 delay /= 2
                 print delay
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_s:
                 delay *= 2
                 print delay
+
+
+        # Stop the fast mode keys.
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 move_left = False
             elif event.key == pygame.K_RIGHT:
                 move_right = False
+            elif event.key == pygame.K_UP:
+                move_up = False
+            elif event.key == pygame.K_DOWN:
+                move_down = False
 
 
 
 
     # write game logic here
     if move_left:
-        motor.move(1,1,delay)
+        motor_lr.move(1, 1, delay)
     elif move_right:
-        motor.move(-1,1,delay)
+        motor_lr.move(-1, 1, delay)
+
+    if move_up:
+        motor_ud.move(1, 1, delay)
+    elif move_down:
+        motor_ud.move(-1, 1, delay)
 
 
     # clear the screen before drawing
