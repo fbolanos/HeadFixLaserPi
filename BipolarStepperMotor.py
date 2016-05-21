@@ -49,8 +49,8 @@ class BipolarStepperMotor:
         GPIO.output(self.pin_b1, 0)
         GPIO.output(self.pin_b2, 0)
 
-
-m1 = BipolarStepperMotor(19, 26, 20, 21)
-for i in range(10):
-    m1.move(1, 10, 0.001)
-    m1.move(-1, 10, 0.001)
+if __name__ == "__main__":
+    m1 = BipolarStepperMotor(19, 26, 20, 21)
+    for i in range(10):
+        m1.move(1, 50, 0.001)
+        m1.move(-1, 50, 0.001)

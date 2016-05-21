@@ -8,7 +8,8 @@ motor_lr = BipolarStepperMotor(19, 26, 20, 21)
 
 
 # motor_ud object to be controlled
-motor_ud = BipolarStepperMotor(1, 1, 1, 1)
+#motor_ud = BipolarStepperMotor(6, 13, 12, 16)
+motor_ud = BipolarStepperMotor(12, 16, 6, 13)
 
 # initialize game engine
 pygame.init()
@@ -57,7 +58,7 @@ while done is False:
                 else:
                     move_down = True
 
-            # Delay and mode selectio
+            # Delay, mode and unhold keys
             elif event.key == pygame.K_e:
                 if step_mode:
                     print "Fast Mode!!"
@@ -71,7 +72,9 @@ while done is False:
             elif event.key == pygame.K_s:
                 delay *= 2
                 print delay
-
+            elif event.key == pygame.K_u:
+                motor_lr.unhold()
+                motor_ud.unhold()
 
         # Stop the fast mode keys.
         elif event.type == pygame.KEYUP:
