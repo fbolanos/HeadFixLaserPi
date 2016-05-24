@@ -4,12 +4,12 @@ from BipolarStepperMotor import BipolarStepperMotor
 
 
 # motor_lr object to be controlled
-motor_lr = BipolarStepperMotor(19, 26, 20, 21)
+motor_lr = BipolarStepperMotor(20, 21, 19, 26)
 
 
 # motor_ud object to be controlled
-#motor_ud = BipolarStepperMotor(6, 13, 12, 16)
-motor_ud = BipolarStepperMotor(12, 16, 6, 13)
+motor_ud = BipolarStepperMotor(6, 13, 12, 16)
+#motor_ud = BipolarStepperMotor(12, 16, 6, 13)
 
 # initialize game engine
 pygame.init()
@@ -28,6 +28,7 @@ move_left = False
 move_right = False
 move_up = False
 move_down = False
+step_size = 1
 while done is False:
     # write event handlers here
     for event in pygame.event.get():
@@ -37,24 +38,24 @@ while done is False:
             # Left Right motor motion
             if event.key == pygame.K_LEFT:
                 if step_mode:
-                    motor_lr.move(1, 1, 0)
+                    motor_lr.move(1, step_size, delay)
                 else:
                     move_left = True
             elif event.key == pygame.K_RIGHT:
                 if step_mode:
-                    motor_lr.move(-1, 1, 0)
+                    motor_lr.move(-1, step_size, delay)
                 else:
                     move_right = True
 
             # Up Down motor motion
             elif event.key == pygame.K_UP:
                 if step_mode:
-                    motor_ud.move(-1, 1, 0)
+                    motor_ud.move(1, step_size, delay)
                 else:
                     move_up = True
             elif event.key == pygame.K_DOWN:
                 if step_mode:
-                    motor_ud.move(1, 1, 0)
+                    motor_ud.move(-1, step_size, delay)
                 else:
                     move_down = True
 
