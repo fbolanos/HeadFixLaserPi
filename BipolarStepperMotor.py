@@ -9,12 +9,14 @@ num_phase = len(phase_seq)
 
 class BipolarStepperMotor:
 
-    def __init__(self, a1, a2, b1, b2):
+    def __init__(self, a1, a2, b1, b2, resolution):
         GPIO.setmode(GPIO.BCM)
         self.pin_a1 = a1
         self.pin_a2 = a2
         self.pin_b1 = b1
         self.pin_b2 = b2
+
+        self.resolution = resolution
 
         GPIO.setup(self.pin_a1, GPIO.OUT)
         GPIO.setup(self.pin_a2, GPIO.OUT)
