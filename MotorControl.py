@@ -4,12 +4,12 @@ from BipolarStepperMotor import BipolarStepperMotor
 # Motors settings
 
 # motor_lr object to be controlled
-motor_lr = BipolarStepperMotor(20, 21, 19, 26)
+motor_lr = BipolarStepperMotor(20, 21, 19, 26, 0.075)
 
 
 # motor_ud object to be controlled
-motor_ud = BipolarStepperMotor(6, 13, 12, 16)
-#motor_ud = BipolarStepperMotor(12, 16, 6, 13)
+#motor_ud = BipolarStepperMotor(6, 13, 12, 16, 0.075)
+motor_ud = BipolarStepperMotor(12, 16, 6, 13, 0.075)
 
 # initialize game engine
 pygame.init()
@@ -28,7 +28,7 @@ move_left = False
 move_right = False
 move_up = False
 move_down = False
-number_steps = 1
+number_steps = 100
 while done is False:
     # write event handlers here
     for event in pygame.event.get():
