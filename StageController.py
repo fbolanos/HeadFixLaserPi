@@ -14,7 +14,7 @@ class StageController:
 
     def __init__(self):
         # X direction motor resolution in mm
-        self.motor_x = BipolarStepperMotor(19, 26, 20, 21, 0.075)
+        self.motor_x = BipolarStepperMotor(20, 21, 19, 26, 0.075)
 
         # Y direction motor resolution in mm
         self.motor_y = BipolarStepperMotor(12, 16, 6, 13, 0.075)
@@ -42,6 +42,7 @@ class StageController:
         steps_x = int(round(new_x / self.motor_x.resolution)) - self.motor_x.pos
         steps_y = int(round(new_y / self.motor_y.resolution)) - self.motor_y.pos
 
+        
         dir_x = self.get_dir(steps_x)
         dir_y = self.get_dir(steps_y)
 
@@ -57,7 +58,7 @@ class StageController:
         elif steps < 0:
             return -1
         else:
-            raise ValueError
+            return 0
 
     def pulse_laser(self):
         t_start = time()
@@ -71,23 +72,44 @@ class StageController:
 if __name__ == "__main__":
     sc = StageController()
 
-    coords = [Coordinate(1, 1), Coordinate(9, 1), Coordinate(3, 5),
-              Coordinate(7, 5), Coordinate(1, 9), Coordinate(9, 9)]
+    #coords = [Coordinate(2, 2), Coordinate(8, 2), Coordinate(3, 5),
+    #          Coordinate(5.5, 5.5), Coordinate(5, 5),
+    #          Coordinate(7, 5), Coordinate(2, 8), Coordinate(8, 8)]
+
+    #coords = [Coordinate(5, 0.0), Coordinate(5, 0.5), Coordinate(5, 1.0),
+    #          Coordinate(5, 1.5), Coordinate(5, 2.0), Coordinate(5, 2.5),
+    #          Coordinate(5, 3.0), Coordinate(5, 3.5), Coordinate(5, 4.0),
+    #          Coordinate(5, 4.5), Coordinate(5, 5.0), Coordinate(5, 5.5),
+    #          Coordinate(5, 6.0), Coordinate(5, 6.5), Coordinate(5, 7.0),
+    #          Coordinate(5, 7.5), Coordinate(5, 8.0), Coordinate(5, 8.5),
+    #          Coordinate(5, 9.0), Coordinate(5, 9.5), Coordinate(5, 10)]
+              
 
     # Draw a 10x10mmm square
+    GPIO.output(sc.laser_pin, True)
     sc.move_to(10, 10, 1)
+    sc.move_to(0, 0, 1)
+    GPIO.output(sc.laser_pin, False)
 
-
+    coords = []
+    for i in range(10):
+        coords.append(Coordinate(5, float(i)))
+        coords.append(Coordinate(5, float(i)+0.5))
+        
+        coords.append(Coordinate(float(i), 5))
+        coords.append(Coordinate(float(i)+0.5, 5))              
 
     #coords = []
     #for i in range(4):
     #    coords.append(Coordinate(i+1, i+1))
     #    coords.append(Coordinate(0, 0))
 
-    #for i in range(1):
-    #    for coord in coords:
-    #        shuffle(coords)
-    #        print "Moving to (", coord.x, ", ", coord.y, ")."
-    #        sc.move_to(coord.x, coord.y, 5)
-    #        print "Pulsing Laser"
-    #        sc.pulse_laser()
+    for i in range(2):
+        shuffle(coords)
+        for coord in coords:
+            print "Moving to (", coord.x, ", ", coord.y, ")."
+            sc.move_to(coord.x, coord.y, 10)
+            print "Pulsing Laser"
+            sc.pulse_laser()
+
+        sc.move_to(0, 0, 10)

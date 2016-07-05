@@ -31,6 +31,8 @@ class BipolarStepperMotor:
         GPIO.cleanup()
 
     def move(self, dir, steps, delay=0.0005):
+        if dir == 0:
+            return
         for i in range(steps):
             next_phase = (self.phase + dir) % num_phase
 
