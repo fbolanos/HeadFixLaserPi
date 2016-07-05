@@ -1,7 +1,8 @@
 from BipolarStepperMotor import BipolarStepperMotor
 #from math import sqrt
-from time import sleep
-from random import randint
+from time import sleep, time
+from random import shuffle
+import RPi.GPIO as GPIO
 
 class Coordinate:
 
@@ -17,6 +18,25 @@ class StageController:
 
         # Y direction motor resolution in mm
         self.motor_y = BipolarStepperMotor(12, 16, 6, 13, 0.075)
+
+        # Laser Pin
+        self.laser_pin = 18
+        GPIO.setup(self.laser_pin, GPIO.OUT)
+        GPIO.output(self.laser_pin, False)
+
+        # Frequency of laser pulses
+        self.frequency = 100
+
+        # On time of the pulse
+        self.duty_cycle = 0.9
+
+        # Time to leave the laser pulsing for
+        self.length = 2
+
+        # On time and off time
+        self.on_time = 1.0/self.frequency * self.duty_cycle
+        self.off_time = 1.0/self.frequency - self.on_time
+
 
     def move_to(self, new_x, new_y, speed):
         steps_x = int(round(new_x / self.motor_x.resolution)) - self.motor_x.pos
@@ -39,18 +59,35 @@ class StageController:
         else:
             raise ValueError
 
+    def pulse_laser(self):
+        t_start = time()
+        while (time()-t_start < self.length):
+            GPIO.output(self.laser_pin, True)
+            sleep(self.on_time)
+            GPIO.output(self.laser_pin, False)
+            sleep(self.off_time)
+
 
 if __name__ == "__main__":
     sc = StageController()
 
-    coords = [Coordinate(15, 15), Coordinate(0, 0)]
+    coords = [Coordinate(1, 1), Coordinate(9, 1), Coordinate(3, 5),
+              Coordinate(7, 5), Coordinate(1, 9), Coordinate(9, 9)]
+
+    # Draw a 10x10mmm square
+    sc.move_to(10, 10, 1)
+
+
 
     #coords = []
     #for i in range(4):
     #    coords.append(Coordinate(i+1, i+1))
     #    coords.append(Coordinate(0, 0))
 
-    for i in range(10):
-        for coord in coords:
-            sc.move_to(coord.x, coord.y, 1)
-            sleep(0.01)
+    #for i in range(1):
+    #    for coord in coords:
+    #        shuffle(coords)
+    #        print "Moving to (", coord.x, ", ", coord.y, ")."
+    #        sc.move_to(coord.x, coord.y, 5)
+    #        print "Pulsing Laser"
+    #        sc.pulse_laser()
