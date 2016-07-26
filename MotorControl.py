@@ -4,7 +4,7 @@ from BipolarStepperMotor import BipolarStepperMotor
 # Motors settings
 
 # motor_lr object to be controlled
-motor_lr = BipolarStepperMotor(20, 21, 19, 26, 0.075)
+motor_lr = BipolarStepperMotor(19, 26, 20, 21, 0.075)
 
 
 # motor_ud object to be controlled

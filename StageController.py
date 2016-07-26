@@ -28,10 +28,10 @@ class StageController:
         self.frequency = 100
 
         # On time of the pulse
-        self.duty_cycle = 0.9
+        self.duty_cycle = 0.95
 
         # Time to leave the laser pulsing for
-        self.length = 2
+        self.length = 0.5
 
         # On time and off time
         self.on_time = 1.0/self.frequency * self.duty_cycle
@@ -86,29 +86,40 @@ if __name__ == "__main__":
               
 
     # Draw a 10x10mmm square
-    GPIO.output(sc.laser_pin, True)
-    sc.move_to(10, 10, 1)
-    sc.move_to(0, 0, 1)
-    GPIO.output(sc.laser_pin, False)
+    #GPIO.output(sc.laser_pin, True)
+    #sc.move_to(10, 10, 1)
+    #sc.move_to(0, 0, 1)
+    #GPIO.output(sc.laser_pin, False)
 
     coords = []
-    for i in range(10):
-        coords.append(Coordinate(5, float(i)))
-        coords.append(Coordinate(5, float(i)+0.5))
+    for i in range(5):
+        for j in range(5):
+            coords.append(Coordinate(float(i), float(j)))
+            
+    #for i in range(10):
+    #    coords.append(Coordinate(5, float(i)))
+        #coords.append(Coordinate(5, float(i)+0.5))
         
-        coords.append(Coordinate(float(i), 5))
-        coords.append(Coordinate(float(i)+0.5, 5))              
+        #coords.append(Coordinate(float(i), 5))
+        #coords.append(Coordinate(float(i)+0.5, 5))              
+    #for i in range(10):
+    #    coords.append(Coordinate(float(i), 5))
 
+    #for i in range(10):
+    #    coords.append(Coordinate(i, i))
+
+    #for i in range(10):
+    #    coords.append(Coordinate(i, 10-i))
     #coords = []
     #for i in range(4):
     #    coords.append(Coordinate(i+1, i+1))
     #    coords.append(Coordinate(0, 0))
 
-    for i in range(2):
-        shuffle(coords)
+    for i in range(1):
+        #shuffle(coords)
         for coord in coords:
             print "Moving to (", coord.x, ", ", coord.y, ")."
-            sc.move_to(coord.x, coord.y, 10)
+            sc.move_to(coord.x, coord.y, 1)
             print "Pulsing Laser"
             sc.pulse_laser()
 
